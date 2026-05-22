@@ -1,0 +1,69 @@
+<svg class="background-layer" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <!-- Grid Pattern -->
+        <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1a73e8" stroke-width="0.5"/>
+            </pattern>
+            
+            <!-- Medical Cross Pattern -->
+            <pattern id="crosses" width="200" height="200" patternUnits="userSpaceOnUse">
+                <g opacity="0.3">
+                    <rect x="95" y="85" width="10" height="30" fill="#1a73e8"/>
+                    <rect x="85" y="95" width="30" height="10" fill="#1a73e8"/>
+                </g>
+            </pattern>
+        </defs>
+        
+        <!-- Base Grid -->
+        <rect width="1920" height="1080" fill="url(#grid)"/>
+        
+        <!-- Map-like geographic shapes -->
+        <g fill="none" stroke="#1a73e8" stroke-width="2" opacity="0.4">
+            <!-- Curved paths resembling roads/boundaries -->
+            <path d="M 0,300 Q 300,250 600,300 T 1200,350 Q 1500,300 1920,280"/>
+            <path d="M 0,500 Q 400,450 800,500 T 1600,550 1920,500"/>
+            <path d="M 0,700 Q 500,650 1000,700 T 1920,750"/>
+            
+            <!-- Vertical connectors -->
+            <path d="M 400,0 Q 420,300 400,600 T 380,1080"/>
+            <path d="M 800,0 Q 820,400 800,800 T 780,1080"/>
+            <path d="M 1200,0 Q 1180,350 1200,700 T 1220,1080"/>
+            <path d="M 1600,0 Q 1620,450 1600,900 T 1580,1080"/>
+        </g>
+        
+        <!-- Location markers (like map pins) -->
+        <g fill="#1a73e8" opacity="0.25">
+            <circle cx="300" cy="250" r="8"/>
+            <circle cx="700" cy="320" r="6"/>
+            <circle cx="1100" cy="360" r="7"/>
+            <circle cx="1500" cy="290" r="6"/>
+            
+            <circle cx="450" cy="480" r="7"/>
+            <circle cx="850" cy="520" r="8"/>
+            <circle cx="1350" cy="540" r="6"/>
+            
+            <circle cx="550" cy="680" r="6"/>
+            <circle cx="1050" cy="720" r="7"/>
+            <circle cx="1450" cy="740" r="8"/>
+        </g>
+        
+        <!-- Connection lines between markers -->
+        <g stroke="#1a73e8" stroke-width="1.5" opacity="0.2" fill="none">
+            <line x1="300" y1="250" x2="700" y2="320"/>
+            <line x1="700" y1="320" x2="1100" y2="360"/>
+            <line x1="450" y1="480" x2="850" y2="520"/>
+            <line x1="850" y1="520" x2="1350" y2="540"/>
+            <line x1="550" y1="680" x2="1050" y2="720"/>
+        </g>
+        
+        <!-- Medical cross symbols -->
+        <rect width="1920" height="1080" fill="url(#crosses)"/>
+        
+        <!-- Circular zones (like coverage areas) -->
+        <g fill="none" stroke="#1a73e8" stroke-width="1" opacity="0.15">
+            <circle cx="500" cy="400" r="150"/>
+            <circle cx="500" cy="400" r="250"/>
+            <circle cx="1400" cy="600" r="180"/>
+            <circle cx="1400" cy="600" r="280"/>
+        </g>
+    </svg>
