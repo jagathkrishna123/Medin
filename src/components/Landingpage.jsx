@@ -750,7 +750,7 @@ const Landingpage = () => {
               hover:shadow-md
               ${
                 isActive
-                  ? "border-[#65769f] shadow-md bg-[#82abed]"
+                  ? "border-[#65769f] shadow-md bg-[#65769f]"
                   : "border-gray-100"
               }
             `}
@@ -769,7 +769,7 @@ const Landingpage = () => {
                 duration-300
                 ${
                   isActive
-                    ? "bg-[#65769f]"
+                    ? "bg-gray-500"
                     : "bg-[#f5f7fa]"
                 }
               `}

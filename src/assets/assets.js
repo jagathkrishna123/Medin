@@ -321,22 +321,24 @@ export const footerBlogPosts = [
     id: 1,
     title: 'Medications & Oral Health',
     date: 'September 26, 2018',
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5e4a7751c?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    image:
+      'https://images.pexels.com/photos/3845653/pexels-photo-3845653.jpeg'
   },
   {
     id: 2,
     title: 'Smile For Your Health!',
     date: 'August 22, 2018',
-    image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    image:
+      'https://images.pexels.com/photos/6627567/pexels-photo-6627567.jpeg'
   },
   {
     id: 3,
     title: 'Tooth Fairy Traditions...',
     date: 'July 25, 2018',
-    image: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    image:
+      'https://images.pexels.com/photos/4269694/pexels-photo-4269694.jpeg'
   }
 ];
-
 
 
 export const testimonials = [
