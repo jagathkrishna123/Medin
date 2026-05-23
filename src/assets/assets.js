@@ -392,3 +392,22 @@ export const faqData = [
     isOpen: false,
   },
 ];
+
+
+export const heroContent = [
+  {
+    title: "Full Medical Care",
+    subtitle: "Advanced healthcare solutions with compassionate specialists",
+    button: "Explore Services",
+  },
+  {
+    title: "Trusted Medical Experts",
+    subtitle: "Professional doctors dedicated to your health and wellness",
+    button: "Meet Our Team",
+  },
+  {
+    title: "Modern Clinical Services",
+    subtitle: "Providing quality treatment with advanced medical technology",
+    button: "Book Appointment",
+  },
+];

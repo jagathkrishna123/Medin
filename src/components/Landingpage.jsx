@@ -13,6 +13,7 @@ import {
   footerBlogPosts,
   testimonials,
   faqData,
+  heroContent,
 } from "../assets/assets";
 import whyChooseUsImg from "../assets/why-choose-us.png";
 import { BsCheckLg } from "react-icons/bs";
@@ -402,31 +403,128 @@ const Landingpage = () => {
       </div>
 
       {/* Hero Section */}
-      <div
-        className="flex-grow flex items-center justify-center relative bg-cover bg-center transition-all duration-1000"
-        style={{
-          backgroundImage: `url(${images[currentImage]})`,
-          minHeight: "600px",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/25"></div>
+     {/* Hero Section */}
+<div
+  className="
+    flex-grow
+    flex
+    items-center
+    justify-center
+    relative
+    bg-cover
+    bg-center
+    transition-all
+    duration-1000
+    overflow-hidden
+    min-h-[520px]
+    sm:min-h-[650px]
+    lg:min-h-screen
+  "
+  style={{
+    backgroundImage: `url(${images[currentImage]})`,
+  }}
+>
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/45"></div>
 
-        {/* Content */}
-        <div className="relative z-10 text-center flex flex-col items-center max-w-4xl px-4 -mt-8">
-          <h2 className="text-[36px] md:text-[46px] text-white font-normal drop-shadow-sm leading-tight">
-            We Provide
-          </h2>
-          <h1 className="text-[44px] md:text-[60px] text-white font-bold drop-shadow-md leading-tight mb-4">
-            Full Medical Care!
-          </h1>
-          <p className="text-white text-[15px] md:text-[17px] font-medium drop-shadow-sm mb-10">
-            Highest standards of customer service
-          </p>
-          <button className="bg-[#65769f] hover:bg-[#526081] text-white px-9 py-3.5 rounded-full text-sm font-semibold transition duration-300 flex items-center gap-2">
-            Know more <span className="text-lg font-normal">&rarr;</span>
-          </button>
-        </div>
-      </div>
+  {/* Content */}
+  <div
+    className="
+      relative
+      z-10
+      text-center
+      flex
+      flex-col
+      items-center
+      justify-center
+      max-w-5xl
+      px-5
+      sm:px-8
+      lg:px-10
+      py-16
+    "
+  >
+    {/* Small Heading */}
+    <span
+      className="
+        text-white/90
+        uppercase
+        tracking-[3px]
+        sm:tracking-[5px]
+        text-[11px]
+        sm:text-[13px]
+        font-semibold
+        mb-4
+      "
+    >
+      Welcome to MedEra
+    </span>
+
+    {/* Main Heading */}
+    <h1
+      className="
+        text-white
+        font-bold
+        leading-[1.1]
+        mb-6
+        text-[38px]
+        sm:text-[52px]
+        md:text-[68px]
+        lg:text-[86px]
+        drop-shadow-lg
+      "
+    >
+      {heroContent[currentImage].title}
+    </h1>
+
+    {/* Subtitle */}
+    <p
+      className="
+        text-white/90
+        text-[15px]
+        sm:text-[17px]
+        md:text-[19px]
+        leading-[1.9]
+        max-w-[700px]
+        mb-10
+        font-light
+      "
+    >
+      {heroContent[currentImage].subtitle}
+    </p>
+
+    {/* Button */}
+    <button
+      className="
+        group
+        bg-white
+        hover:bg-[#65769f]
+        text-[#2f3645]
+        hover:text-white
+        px-7
+        sm:px-9
+        py-3.5
+        sm:py-4
+        rounded-full
+        text-[13px]
+        sm:text-[14px]
+        font-semibold
+        transition-all
+        duration-300
+        flex
+        items-center
+        gap-3
+        shadow-lg
+      "
+    >
+      {heroContent[currentImage].button}
+
+      <span className="group-hover:translate-x-1 transition-transform duration-300">
+        →
+      </span>
+    </button>
+  </div>
+</div>
 
       {/* Features Section */}
 <div className="bg-[#fafbfd] py-20 px-4 md:px-12 w-full">
