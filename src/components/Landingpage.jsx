@@ -22,8 +22,9 @@ const Landingpage = () => {
   const [eventsIndex, setEventsIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [current, setCurrent] = useState(0);
-    const [faqs, setFaqs] = useState(faqData);
-
+  const [faqs, setFaqs] = useState(faqData);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   const images = [
     "https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
@@ -76,16 +77,37 @@ const Landingpage = () => {
     );
   };
 
-
-
-    const handleToggle = (id) => {
+  const handleToggle = (id) => {
     setFaqs((prev) =>
       prev.map((item) =>
-        item.id === id
-          ? { ...item, isOpen: !item.isOpen }
-          : item
-      )
+        item.id === id ? { ...item, isOpen: !item.isOpen } : item,
+      ),
     );
+  };
+
+  // swipe function
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 50) {
+      // Swipe Left
+      setCurrentIndex((prev) =>
+        prev + 1 >= specialistsData.length ? 0 : prev + 1,
+      );
+    }
+
+    if (touchStart - touchEnd < -50) {
+      // Swipe Right
+      setCurrentIndex((prev) =>
+        prev - 1 < 0 ? specialistsData.length - 1 : prev - 1,
+      );
+    }
   };
 
   return (
@@ -749,85 +771,78 @@ const Landingpage = () => {
       </section>
 
       {/* Patient Information Section */}
-       <section className="flex flex-col lg:flex-row w-full bg-[#f9f9f9]">
-      
-      {/* Left Side */}
-      <div className="w-full lg:w-1/2 flex justify-end">
-        <div className="w-full max-w-[700px] px-6 py-24 lg:pr-16 lg:pl-12 flex flex-col justify-center">
-          
-          <h2 className="text-[32px] md:text-[38px] font-bold text-[#444444] mb-10">
-            Patient Information
-          </h2>
+      <section className="flex flex-col lg:flex-row w-full bg-[#f9f9f9]">
+        {/* Left Side */}
+        <div className="w-full lg:w-1/2 flex justify-end">
+          <div className="w-full max-w-[700px] px-6 py-24 lg:pr-16 lg:pl-12 flex flex-col justify-center">
+            <h2 className="text-[32px] md:text-[38px] font-bold text-[#444444] mb-10">
+              Patient Information
+            </h2>
 
-          <div className="flex flex-col gap-4 mb-10">
-            {faqs.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white rounded-sm shadow-[0_4px_12px_rgba(0,0,0,0.02)] border border-gray-100/80 overflow-hidden"
-              >
-                
-                {/* Question */}
+            <div className="flex flex-col gap-4 mb-10">
+              {faqs.map((item) => (
                 <div
-                  onClick={() => handleToggle(item.id)}
-                  className="flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-gray-50 transition"
+                  key={item.id}
+                  className="bg-white rounded-sm shadow-[0_4px_12px_rgba(0,0,0,0.02)] border border-gray-100/80 overflow-hidden"
                 >
-                  <span
-                    className={`text-[14.5px] font-bold ${
-                      item.isOpen
-                        ? "text-[#444444]"
-                        : "text-[#555555]"
-                    }`}
+                  {/* Question */}
+                  <div
+                    onClick={() => handleToggle(item.id)}
+                    className="flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-gray-50 transition"
                   >
-                    {item.question}
-                  </span>
+                    <span
+                      className={`text-[14.5px] font-bold ${
+                        item.isOpen ? "text-[#444444]" : "text-[#555555]"
+                      }`}
+                    >
+                      {item.question}
+                    </span>
 
-                  {item.isOpen ? (
-                    <ChevronUp
-                      className="w-4 h-4 text-[#65769f]"
-                      strokeWidth={2.5}
-                    />
-                  ) : (
-                    <ChevronDown
-                      className="w-4 h-4 text-[#65769f]"
-                      strokeWidth={2.5}
-                    />
+                    {item.isOpen ? (
+                      <ChevronUp
+                        className="w-4 h-4 text-[#65769f]"
+                        strokeWidth={2.5}
+                      />
+                    ) : (
+                      <ChevronDown
+                        className="w-4 h-4 text-[#65769f]"
+                        strokeWidth={2.5}
+                      />
+                    )}
+                  </div>
+
+                  {/* Answer */}
+                  {item.isOpen && (
+                    <div className="px-6 pb-6 pt-1">
+                      <p className="text-[#888888] text-[14px] leading-[1.7]">
+                        {item.answer}
+                      </p>
+                    </div>
                   )}
                 </div>
+              ))}
+            </div>
 
-                {/* Answer */}
-                {item.isOpen && (
-                  <div className="px-6 pb-6 pt-1">
-                    <p className="text-[#888888] text-[14px] leading-[1.7]">
-                      {item.answer}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-
-          <div>
-            <button className="bg-[#65769f] hover:bg-[#526081] text-white px-7 py-3 rounded-full text-[13px] font-semibold transition duration-300 flex items-center gap-2 shadow-sm">
-              Ask Question
-              <span className="text-[16px] ml-1 font-normal">
-                &rarr;
-              </span>
-            </button>
+            <div>
+              <button className="bg-[#65769f] hover:bg-[#526081] text-white px-7 py-3 rounded-full text-[13px] font-semibold transition duration-300 flex items-center gap-2 shadow-sm">
+                Ask Question
+                <span className="text-[16px] ml-1 font-normal">&rarr;</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Right Side */}
-<div className="w-full lg:w-1/2">
-  <div className="h-full lg:h-screen">
-    <img
-      src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-      alt=""
-      className="w-full h-full object-cover"
-    />
-  </div>
-</div>
-    </section>
+        {/* Right Side */}
+        <div className="w-full lg:w-1/2">
+          <div className="h-full lg:h-screen">
+            <img
+              src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+              alt=""
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </section>
 
       {/* Our Specialists Section */}
       <section className="py-24 bg-white w-full flex flex-col items-center overflow-hidden">
@@ -865,7 +880,12 @@ const Landingpage = () => {
         </div>
 
         {/* Carousel */}
-        <div className="w-full max-w-[1200px] overflow-hidden px-4">
+        <div
+          className="w-full max-w-[1200px] overflow-hidden px-4"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
           <div className="flex gap-6 items-stretch">
             {[...specialistsData, ...specialistsData, ...specialistsData].map(
               (specialist, index) => (
