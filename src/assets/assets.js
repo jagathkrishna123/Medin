@@ -281,3 +281,57 @@ export const footerBlogPosts = [
     image: 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
   }
 ];
+
+
+
+export const testimonials = [
+  {
+    text: "Am very impressed with you all as well as being highly proficient is absolutely adorable. I feel so relaxed in her capable hands and hope to be her patient for a very long time! You are a fantastic team and I feel very privileged to come to you all!!!",
+    name: "Wilmer Stevenson",
+    role: "Creative manager",
+  },
+  {
+    text: "The service was exceptional from start to finish. Everyone was caring, professional, and made me feel comfortable throughout the experience.",
+    name: "Sarah Johnson",
+    role: "Marketing Director",
+  },
+  {
+    text: "I truly appreciate the attention and dedication of the entire team. The environment is welcoming and the care provided is outstanding.",
+    name: "David Miller",
+    role: "Business Owner",
+  },
+];
+
+
+
+export const faqData = [
+  {
+    id: 1,
+    question: "1. How do I make an appointment?",
+    answer:
+      "If you would like to make an appointment with one of our practitioners, please contact our reception staff. Alternatively, you may book your appointments online. Every effort will be made to accommodate your preferred time and choice of practitioner.",
+    isOpen: true,
+  },
+  {
+    id: 2,
+    question: "2. How do I get a copy of my records to another provider?",
+    answer:
+      "You can request a copy of your medical records by filling out a medical records release form at our clinic or through our online patient portal. Once approved, the records can be securely transferred to your chosen healthcare provider.",
+    isOpen: false,
+  },
+  {
+    id: 3,
+    question: "3. Is there a charge for copies of my medical record?",
+    answer:
+      "In most cases, a small administrative fee may apply for printed copies of medical records. Electronic copies are often provided free of charge. Please contact our support team for detailed pricing information.",
+    isOpen: false,
+  },
+  {
+    id: 4,
+    question:
+      "4. How do I assure that my designated person has access to my medical records?",
+    answer:
+      "You can authorize another person to access your medical records by completing a patient authorization form. This allows us to securely share information with the individual you designate while protecting your privacy.",
+    isOpen: false,
+  },
+];
