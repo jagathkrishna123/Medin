@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TbFirstAidKit } from "react-icons/tb";
 import { SlChemistry } from "react-icons/sl";
 import { LiaUserNurseSolid } from "react-icons/lia";
-import { Check, ChevronDown, ChevronUp, X } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, ChevronUp, X } from "lucide-react";
 
 import {
   departmentsData,
@@ -19,12 +19,18 @@ import { BsCheckLg } from "react-icons/bs";
 
 const Landingpage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const [eventsIndex, setEventsIndex] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [current, setCurrent] = useState(0);
   const [faqs, setFaqs] = useState(faqData);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+
+  const [activeDepartment, setActiveDepartment] = useState(departmentsData[0]);
+
+  const duplicatedData = [...specialistsData, ...specialistsData];
+
 
   const images = [
     "https://images.unsplash.com/photo-1551076805-e1869033e561?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
@@ -45,11 +51,25 @@ const Landingpage = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % specialistsData.length);
-    }, 2000);
-    return () => clearInterval(timer);
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => prev + 1);
+    }, 2500);
+
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (currentIndex >= specialistsData.length) {
+      const timeout = setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentIndex(0);
+        setTimeout(() => {
+          setIsTransitioning(true);
+        }, 50);
+      }, 700);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex]);
 
   useEffect(() => {
     const eventsTimer = setInterval(() => {
@@ -97,18 +117,26 @@ const Landingpage = () => {
   const handleTouchEnd = () => {
     if (touchStart - touchEnd > 50) {
       // Swipe Left
-      setCurrentIndex((prev) =>
-        prev + 1 >= specialistsData.length ? 0 : prev + 1,
-      );
+      setCurrentIndex((prev) => prev + 1);
     }
 
     if (touchStart - touchEnd < -50) {
       // Swipe Right
-      setCurrentIndex((prev) =>
-        prev - 1 < 0 ? specialistsData.length - 1 : prev - 1,
-      );
+      if (currentIndex === 0) {
+        setIsTransitioning(false);
+        setCurrentIndex(specialistsData.length);
+        setTimeout(() => {
+          setIsTransitioning(true);
+          setCurrentIndex(specialistsData.length - 1);
+        }, 50);
+      } else {
+        setCurrentIndex((prev) => prev - 1);
+      }
     }
   };
+
+  //swipe
+
 
   return (
     <div className="w-full min-h-screen flex flex-col font-poppins">
@@ -284,11 +312,10 @@ const Landingpage = () => {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 z-50 flex justify-end transition-opacity duration-300 lg:hidden ${
-          isMobileMenuOpen
+        className={`fixed inset-0 z-50 flex justify-end transition-opacity duration-300 lg:hidden ${isMobileMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
-        }`}
+          }`}
       >
         {/* Overlay background */}
         <div
@@ -298,9 +325,8 @@ const Landingpage = () => {
 
         {/* Sidebar */}
         <div
-          className={`relative w-64 max-w-full bg-white h-full shadow-xl flex flex-col transform transition-transform duration-300 ease-in-out ${
-            isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`relative w-64 max-w-full bg-white h-full shadow-xl flex flex-col transform transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           <div className="flex items-center justify-between p-5 border-b border-gray-100">
             <span className="text-[22px] font-bold text-[#3a3a3a] tracking-tight">
@@ -403,54 +429,198 @@ const Landingpage = () => {
       </div>
 
       {/* Features Section */}
-      <div className="bg-white py-16 px-4 md:px-12 max-w-[1400px] mx-auto w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6 lg:gap-10 border-b border-gray-100 pb-16">
-          {/* Feature 1 */}
-          <div className="flex items-start gap-5">
-            <div className="flex-shrink-0 mt-1">
-              <TbFirstAidKit className="w-11 h-11 text-[#566077]" />
-            </div>
-            <div>
-              <h3 className="text-[19px] font-bold text-[#444444] mb-2">
-                24 Hour Emergency
-              </h3>
-              <p className="text-gray-500 text-[15px] leading-relaxed">
-                Open round the clock for convenience, quick and easy access
-              </p>
-            </div>
-          </div>
-
-          {/* Feature 2 */}
-          <div className="flex items-start gap-5">
-            <div className="flex-shrink-0 mt-1">
-              <SlChemistry className="w-11 h-11 text-[#566077]" />
-            </div>
-            <div>
-              <h3 className="text-[19px] font-bold text-[#444444] mb-2">
-                Complete Lab Services
-              </h3>
-              <p className="text-gray-500 text-[15px] leading-relaxed">
-                Cost-efficient, comprehensive and clinical laboratory services
-              </p>
-            </div>
-          </div>
-
-          {/* Feature 3 */}
-          <div className="flex items-start gap-5">
-            <div className="flex-shrink-0 mt-1">
-              <LiaUserNurseSolid className="w-11 h-11 text-[#566077]" />
-            </div>
-            <div>
-              <h3 className="text-[19px] font-bold text-[#444444] mb-2">
-                Medical Professionals
-              </h3>
-              <p className="text-gray-500 text-[15px] leading-relaxed">
-                Qualified and certified physicians for quality medical care
-              </p>
-            </div>
-          </div>
+<div className="bg-[#fafbfd] py-20 px-4 md:px-12 w-full">
+  <div className="max-w-[1400px] mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      {/* Feature 1 */}
+      <div
+        className="
+          group
+          bg-white
+          rounded-3xl
+          border
+          border-gray-100
+          p-8
+          shadow-[0_4px_25px_rgba(0,0,0,0.03)]
+          hover:shadow-[0_10px_40px_rgba(0,0,0,0.06)]
+          hover:-translate-y-2
+          transition-all
+          duration-500
+        "
+      >
+        {/* Icon */}
+        <div
+          className="
+            w-16
+            h-16
+            rounded-2xl
+            bg-[#f4f6fb]
+            flex
+            items-center
+            justify-center
+            mb-6
+            group-hover:bg-[#65769f]
+            transition-all
+            duration-500
+          "
+        >
+          <TbFirstAidKit className="w-8 h-8 text-[#65769f] group-hover:text-white transition-colors duration-500" />
         </div>
+
+        {/* Content */}
+        <h3 className="text-[22px] font-bold text-[#2f3645] mb-4">
+          24 Hour Emergency
+        </h3>
+
+        <p className="text-gray-500 text-[15px] leading-[1.9] mb-6">
+          Open round the clock for convenience, quick and easy access to
+          emergency medical support whenever you need it.
+        </p>
+
+        {/* Bottom Link */}
+        <button
+          className="
+            flex
+            items-center
+            gap-2
+            text-[#65769f]
+            font-semibold
+            text-[14px]
+            hover:gap-3
+            transition-all
+            duration-300
+          "
+        >
+          Learn More
+          <span className="text-[18px]">→</span>
+        </button>
       </div>
+
+      {/* Feature 2 */}
+      <div
+        className="
+          group
+          bg-white
+          rounded-3xl
+          border
+          border-gray-100
+          p-8
+          shadow-[0_4px_25px_rgba(0,0,0,0.03)]
+          hover:shadow-[0_10px_40px_rgba(0,0,0,0.06)]
+          hover:-translate-y-2
+          transition-all
+          duration-500
+        "
+      >
+        <div
+          className="
+            w-16
+            h-16
+            rounded-2xl
+            bg-[#f4f6fb]
+            flex
+            items-center
+            justify-center
+            mb-6
+            group-hover:bg-[#65769f]
+            transition-all
+            duration-500
+          "
+        >
+          <SlChemistry className="w-8 h-8 text-[#65769f] group-hover:text-white transition-colors duration-500" />
+        </div>
+
+        <h3 className="text-[22px] font-bold text-[#2f3645] mb-4">
+          Complete Lab Services
+        </h3>
+
+        <p className="text-gray-500 text-[15px] leading-[1.9] mb-6">
+          Cost-efficient, comprehensive and clinical laboratory services with
+          accurate diagnostics and modern technology.
+        </p>
+
+        <button
+          className="
+            flex
+            items-center
+            gap-2
+            text-[#65769f]
+            font-semibold
+            text-[14px]
+            hover:gap-3
+            transition-all
+            duration-300
+          "
+        >
+          Learn More
+          <span className="text-[18px]">→</span>
+        </button>
+      </div>
+
+      {/* Feature 3 */}
+      <div
+        className="
+          group
+          bg-white
+          rounded-3xl
+          border
+          border-gray-100
+          p-8
+          shadow-[0_4px_25px_rgba(0,0,0,0.03)]
+          hover:shadow-[0_10px_40px_rgba(0,0,0,0.06)]
+          hover:-translate-y-2
+          transition-all
+          duration-500
+        "
+      >
+        <div
+          className="
+            w-16
+            h-16
+            rounded-2xl
+            bg-[#f4f6fb]
+            flex
+            items-center
+            justify-center
+            mb-6
+            group-hover:bg-[#65769f]
+            transition-all
+            duration-500
+          "
+        >
+          <LiaUserNurseSolid className="w-8 h-8 text-[#65769f] group-hover:text-white transition-colors duration-500" />
+        </div>
+
+        <h3 className="text-[22px] font-bold text-[#2f3645] mb-4">
+          Medical Professionals
+        </h3>
+
+        <p className="text-gray-500 text-[15px] leading-[1.9] mb-6">
+          Qualified and certified physicians dedicated to delivering quality
+          medical care with compassion and expertise.
+        </p>
+
+        <button
+          className="
+            flex
+            items-center
+            gap-2
+            text-[#65769f]
+            font-semibold
+            text-[14px]
+            hover:gap-3
+            transition-all
+            duration-300
+          "
+        >
+          Learn More
+          <span className="text-[18px]">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
       {/* About Section */}
       <div className="bg-[#f9f9f9] py-20 px-4 md:px-12 w-full">
@@ -536,114 +706,156 @@ const Landingpage = () => {
       </div>
 
       {/* Our Departments Section------------------------------------------------------- */}
-      <div className="bg-white py-24 px-4 md:px-12 w-full flex flex-col items-center">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mb-16">
-          <h2 className="text-[36px] md:text-[40px] font-bold text-[#3c4456] mb-4">
-            Our Departments
-          </h2>
-          <div className="w-12 h-[2px] bg-[#566077] mx-auto mb-6"></div>
-          <p className="text-gray-500 text-[16px] leading-relaxed">
-            MedEra Medical Center specializes in different medical services for
-            the
-            <br className="hidden md:block" />
-            convenience of community:
-          </p>
-        </div>
+   <section className="bg-white py-24 px-4 md:px-12 w-full">
+  
+  {/* Header */}
+  <div className="text-center max-w-2xl mx-auto mb-16">
+    <h2 className="text-[36px] md:text-[42px] font-bold text-[#3c4456] mb-4">
+      Our Departments
+    </h2>
 
-        {/* Content Layout */}
-        <div className="w-full max-w-[1300px] flex flex-col lg:flex-row gap-8 lg:gap-12">
-          {/* Left Grid (8 Departments) */}
-          <div className="w-full lg:w-2/3 grid grid-cols-2 md:grid-cols-4 gap-4">
-            {departmentsData.map((dept, index) => {
-              const isActive = index === 0; // Hardcoded first item as active
+    <div className="w-12 h-[2px] bg-[#65769f] mx-auto mb-6"></div>
 
-              return (
-                <div
-                  key={dept.id}
-                  className={`flex flex-col items-center justify-center rounded-md p-8 transition-colors duration-300 cursor-pointer h-[200px] ${
+    <p className="text-gray-500 text-[16px] leading-relaxed">
+      MedEra Medical Center specializes in different medical services
+      for the convenience of the community.
+    </p>
+  </div>
+
+  {/* Main Layout */}
+  <div className="max-w-[1300px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-10">
+
+    {/* LEFT SIDE */}
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+
+      {departmentsData.map((dept) => {
+        const isActive = activeDepartment.id === dept.id;
+
+        return (
+          <div
+            key={dept.id}
+            onClick={() => setActiveDepartment(dept)}
+            className={`
+              cursor-pointer
+              border
+              rounded-xl
+              p-6
+              flex
+              flex-col
+              items-center
+              justify-center
+              text-center
+              transition-all
+              duration-300
+              hover:shadow-md
+              ${
+                isActive
+                  ? "border-[#65769f] shadow-md bg-[#82abed]"
+                  : "border-gray-100"
+              }
+            `}
+          >
+            {/* Icon */}
+            <div
+              className={`
+                w-[70px]
+                h-[70px]
+                rounded-full
+                flex
+                items-center
+                justify-center
+                mb-5
+                transition-all
+                duration-300
+                ${
+                  isActive
+                    ? "bg-[#65769f]"
+                    : "bg-[#f5f7fa]"
+                }
+              `}
+            >
+              <dept.icon
+                className={`
+                  w-8
+                  h-8
+                  ${
                     isActive
-                      ? "bg-[#606b85]"
-                      : "bg-[#f9f9f9] hover:bg-[#f0f0f0]"
-                  }`}
-                >
-                  <div
-                    className={`w-[70px] h-[70px] rounded-full flex items-center justify-center mb-4 transition-colors duration-300 ${
-                      isActive
-                        ? "bg-white shadow-[0_0_0_6px_rgba(255,255,255,0.2)]"
-                        : "bg-white shadow-sm"
-                    }`}
-                  >
-                    <dept.icon
-                      className={`w-8 h-8 ${isActive ? "text-[#606b85]" : "text-[#b0b0b0]"}`}
-                      strokeWidth={1.5}
-                    />
-                  </div>
-                  <span
-                    className={`text-[15px] font-bold text-center ${isActive ? "text-white" : "text-[#444444]"}`}
-                  >
-                    {dept.name}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Right Details Panel */}
-          <div className="w-full lg:w-1/3 relative overflow-hidden pl-4 lg:pl-8 pt-8 lg:pt-0">
-            {/* Watermark Text */}
-            <div className="absolute top-[-20px] right-[-60px] text-[120px] font-bold text-[#f5f5f5] pointer-events-none select-none z-0">
-              Psychiatry
+                      ? "text-white"
+                      : "text-[#65769f]"
+                  }
+                `}
+                strokeWidth={1.6}
+              />
             </div>
 
-            {/* Detail Content */}
-            <div className="relative z-10 flex flex-col h-full">
-              <h3 className="text-[28px] font-bold text-[#444444] mb-6">
-                {departmentsData[0].name}
-              </h3>
-
-              <div className="text-gray-500 text-[15px] leading-relaxed space-y-6 flex-grow">
-                <p>{departmentsData[0].description1}</p>
-                <p>{departmentsData[0].description2}</p>
-              </div>
-
-              {/* Pagination Controls */}
-              <div className="flex gap-4 mt-12">
-                <button className="w-10 h-10 rounded-full bg-[#f9f9f9] flex items-center justify-center hover:bg-gray-200 transition text-gray-400">
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-                <button className="w-10 h-10 rounded-full bg-[#f9f9f9] flex items-center justify-center hover:bg-gray-200 transition text-[#606b85]">
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
+            {/* Title */}
+            <h3
+              className={`
+                text-[15px]
+                font-semibold
+                leading-[1.5]
+                ${
+                  isActive
+                    ? "text-[#ffffff]"
+                    : "text-[#444444]"
+                }
+              `}
+            >
+              {dept.name}
+            </h3>
           </div>
+        );
+      })}
+    </div>
+
+    {/* RIGHT SIDE */}
+    <div className="bg-[#fafafa] border border-gray-100 rounded-2xl p-10 flex flex-col justify-between">
+
+      <div>
+
+        {/* Small Label */}
+        <span className="text-[#65769f] text-[13px] font-semibold uppercase tracking-wide">
+          Department Details
+        </span>
+
+        {/* Title */}
+        <h3 className="text-[34px] font-bold text-[#3c4456] mt-4 mb-8">
+          {activeDepartment.name}
+        </h3>
+
+        {/* Content */}
+        <div className="space-y-6 text-gray-500 text-[15px] leading-[1.9]">
+          <p>{activeDepartment.description1}</p>
+
+          <p>{activeDepartment.description2}</p>
         </div>
       </div>
+
+      {/* Button */}
+      <div className="mt-12">
+        <button
+          className="
+            bg-white
+            border
+            border-gray-200
+            hover:border-[#65769f]
+            hover:text-[#65769f]
+            px-7
+            py-3
+            rounded-full
+            text-[14px]
+            font-semibold
+            transition-all
+            duration-300
+            shadow-sm
+          "
+        >
+          Learn More →
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Why Choose Us Section */}
       <section className="bg-[#f5f5f3] pt-6 overflow-hidden relative">
@@ -791,9 +1003,8 @@ const Landingpage = () => {
                     className="flex justify-between items-center px-6 py-5 cursor-pointer hover:bg-gray-50 transition"
                   >
                     <span
-                      className={`text-[14.5px] font-bold ${
-                        item.isOpen ? "text-[#444444]" : "text-[#555555]"
-                      }`}
+                      className={`text-[14.5px] font-bold ${item.isOpen ? "text-[#444444]" : "text-[#555555]"
+                        }`}
                     >
                       {item.question}
                     </span>
@@ -887,76 +1098,134 @@ const Landingpage = () => {
           onTouchEnd={handleTouchEnd}
         >
           <div className="flex gap-6 items-stretch">
-            {[...specialistsData, ...specialistsData, ...specialistsData].map(
-              (specialist, index) => (
-                <div
-                  key={index}
-                  className="
-  w-full
-  sm:w-[calc(50%-12px)]
-  lg:w-[calc(33.333%-16px)]
-  flex-shrink-0
-  bg-white
-  border
-  border-gray-100/80
-  rounded-sm
-  overflow-hidden
-  group
-  shadow-[0_2px_15px_rgba(0,0,0,0.03)]
-  hover:shadow-lg
-  transition-all
-  duration-700
-  ease-in-out
-  flex
-  flex-col
-"
-                  style={{
-                    transform: `translateX(calc(-${currentIndex} * (100% + 24px)))`,
-                  }}
-                >
-                  {/* Image */}
-                  <div className="h-[320px] w-full overflow-hidden bg-gray-100 shrink-0">
-                    <img
-                      src={specialist.image}
-                      alt={specialist.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 object-top"
-                    />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex flex-col items-center pt-6 pb-6 bg-[#fafbfc] flex-grow">
-                    <h3 className="text-[17px] font-bold text-[#444444] mb-1">
-                      {specialist.name}
-                    </h3>
-                    <p className="text-[#65769f] text-[13px] mb-4">
-                      {specialist.title}
-                    </p>
-
-                    <div className="w-[85%] h-[1px] bg-gray-200 mb-4"></div>
-
-                    {/* Schedule */}
-                    <div className="w-[85%] flex flex-col gap-2 mb-4">
-                      {specialist.schedule.map((item, i) => (
-                        <div
-                          key={i}
-                          className="flex justify-between text-[12px] text-[#666666]"
-                        >
-                          <span>{item.days}</span>
-                          <span>{item.time}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="w-[85%] h-[1px] bg-gray-200 mb-5"></div>
-
-                    <button className="text-[#65769f] font-bold text-[12px] hover:text-[#526081] transition flex items-center gap-1">
-                      Booking a visit{" "}
-                      <span className="font-normal ml-0.5">&rarr;</span>
-                    </button>
-                  </div>
+            {duplicatedData.map((specialist, index) => (
+              <div
+                key={index}
+                className={`
+          w-full
+          sm:w-[calc(50%-12px)]
+          lg:w-[calc(33.333%-16px)]
+          flex-shrink-0
+          bg-white
+          border
+          border-gray-100/80
+          rounded-sm
+          overflow-hidden
+          group
+          shadow-[0_2px_15px_rgba(0,0,0,0.03)]
+          hover:shadow-lg
+          ${isTransitioning ? "transition-all duration-700 ease-in-out" : ""}
+          flex
+          flex-col
+        `}
+                style={{
+                  transform: `translateX(calc(-${currentIndex} * (100% + 24px)))`,
+                }}
+              >
+                {/* Image */}
+                <div className="h-[280px] sm:h-[320px] w-full overflow-hidden bg-gray-100 shrink-0">
+                  <img
+                    src={specialist.image}
+                    alt={specialist.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 object-top"
+                  />
                 </div>
-              ),
-            )}
+
+                {/* Content */}
+                <div className="flex flex-col items-center pt-6 pb-6 bg-[#fafbfc] flex-grow">
+                  <h3 className="text-[17px] font-bold text-[#444444] mb-1">
+                    {specialist.name}
+                  </h3>
+                  <p className="text-[#65769f] text-[13px] mb-4">
+                    {specialist.title}
+                  </p>
+
+                  <div className="w-[85%] h-[1px] bg-gray-200 mb-4"></div>
+
+                  {/* Schedule */}
+                  <div className="w-[85%] flex flex-col gap-2 mb-4">
+                    {specialist.schedule.map((item, i) => (
+                      <div
+                        key={i}
+                        className="flex justify-between text-[12px] text-[#666666]"
+                      >
+                        <span>{item.days}</span>
+                        <span>{item.time}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="w-[85%] h-[1px] bg-gray-200 mb-5"></div>
+
+                  <button
+                    className="
+    group
+    relative
+    overflow-hidden
+    bg-white
+    border
+    border-gray-200
+    hover:border-[#65769f]
+    px-6
+    py-3
+    rounded-full
+    shadow-sm
+    hover:shadow-md
+    transition-all
+    duration-300
+    flex
+    items-center
+    gap-3
+  "
+                  >
+                    {/* Text */}
+                    <span
+                      className="
+      text-[#444444]
+      text-[12px]
+      font-semibold
+      tracking-wide
+      uppercase
+      transition-colors
+      duration-300
+      group-hover:text-[#65769f]
+    "
+                    >
+                      Booking a visit
+                    </span>
+
+                    {/* Arrow Circle */}
+                    <div
+                      className="
+      w-7
+      h-7
+      rounded-full
+      bg-[#f5f7fb]
+      flex
+      items-center
+      justify-center
+      transition-all
+      duration-300
+      group-hover:bg-[#65769f]
+      group-hover:translate-x-1
+    "
+                    >
+                      <span
+                        className="
+        text-[#65769f]
+        text-[14px]
+        transition-colors
+        duration-300
+        group-hover:text-white
+      "
+                      >
+                        <ChevronRight className="text-gray-400 group-hover:text-white" />
+                      </span>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -1134,11 +1403,10 @@ const Landingpage = () => {
             <button
               key={i}
               onClick={() => setEventsIndex(i)}
-              className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                i === eventsIndex
+              className={`w-2 h-2 rounded-full transition-colors duration-300 ${i === eventsIndex
                   ? "bg-[#65769f]"
                   : "bg-gray-300 hover:bg-gray-400"
-              }`}
+                }`}
             />
           ))}
         </div>
@@ -1231,9 +1499,30 @@ const Landingpage = () => {
             backgroundSize: "24px 24px",
           }}
         ></div>
-        <div className="absolute top-[35%] md:top-[25%] left-[-15%] md:left-[-5%] text-[80px] md:text-[120px] font-bold text-gray-200 opacity-80 whitespace-nowrap z-0 pointer-events-none select-none tracking-tighter">
-          Looking for a Certified Doctor?
-        </div>
+        <div className="
+  absolute
+  bottom-28
+  md:bottom-10
+  lg:top-[25%]
+  left-1/2
+  lg:left-[-5%]
+  -translate-x-1/2
+  lg:translate-x-0
+  text-[34px]
+  sm:text-[48px]
+  md:text-[70px]
+  lg:text-[120px]
+  font-bold
+  text-gray-400
+  opacity-70
+  whitespace-nowrap
+  z-0
+  pointer-events-none
+  select-none
+  tracking-tighter
+">
+  Looking for a Certified Doctor?
+</div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center px-4 md:px-12">
           {/* Left Side: Image */}

@@ -220,7 +220,62 @@ export const specialistsData = [
       { days: 'Friday', time: '07:00 - 22:00' },
       { days: 'Saturday', time: '08:00 - 18:00' }
     ]
-  }
+  },
+  {
+  id: 6,
+  name: 'Dr. Emily Carter',
+  title: 'Cardiologist',
+  image: 'https://images.pexels.com/photos/5327585/pexels-photo-5327585.jpeg',
+  schedule: [
+    { days: 'Mon-Thu', time: '09:00 - 18:00' },
+    { days: 'Friday', time: '08:00 - 20:00' },
+    { days: 'Saturday', time: '09:00 - 16:00' }
+  ]
+},
+{
+  id: 7,
+  name: 'Dr. Michael Lee',
+  title: 'Neurologist',
+  image: 'https://images.pexels.com/photos/6749778/pexels-photo-6749778.jpeg',
+  schedule: [
+    { days: 'Mon-Thu', time: '10:00 - 19:00' },
+    { days: 'Friday', time: '08:00 - 18:00' },
+    { days: 'Saturday', time: '09:00 - 15:00' }
+  ]
+},
+{
+  id: 8,
+  name: 'Dr. Olivia Brown',
+  title: 'Pediatrician',
+  image: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg',
+  schedule: [
+    { days: 'Mon-Thu', time: '08:00 - 17:00' },
+    { days: 'Friday', time: '08:00 - 19:00' },
+    { days: 'Saturday', time: '10:00 - 14:00' }
+  ]
+},
+{
+  id: 9,
+  name: 'Dr. James Wilson',
+  title: 'Dermatologist',
+  image: 'https://images.pexels.com/photos/6129507/pexels-photo-6129507.jpeg',
+  schedule: [
+    { days: 'Mon-Thu', time: '09:00 - 20:00' },
+    { days: 'Friday', time: '08:00 - 21:00' },
+    { days: 'Saturday', time: '09:00 - 17:00' }
+  ]
+},
+{
+  id: 10,
+  name: 'Dr. Sophia Martinez',
+  title: 'Orthopedic Surgeon',
+  image: 'https://images.pexels.com/photos/5998476/pexels-photo-5998476.jpeg',
+  schedule: [
+    { days: 'Mon-Thu', time: '07:00 - 18:00' },
+    { days: 'Friday', time: '08:00 - 20:00' },
+    { days: 'Saturday', time: '09:00 - 13:00' }
+  ]
+}
 ];
 
 export const clinicEventsData = [
